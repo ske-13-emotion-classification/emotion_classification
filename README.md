@@ -19,13 +19,14 @@
 3. Unzip
 
 ```
-  unzip opencv-master.zip
+  unzip master.zip
 ```
 
-4. Move OpenCV data to \$ROOT_DIR/data
+4. Create data in $ROOT_DIR & Move OpenCV data to \$ROOT_DIR/data
 
 ```
-  mv opencv-master/data $ROOT_DIR/data
+  mk -p $ROOT_DIR/data
+  mv ./opencv-master/data $ROOT_DIR/data
 ```
 
 5. Install dependencies
@@ -34,7 +35,7 @@
   pip install -r requirements.txt
 ```
 
-6. Run Webcam emotion classification
+6. Run Webcam emotion classification demo
 
 ```
   python main.py
