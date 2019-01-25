@@ -6,6 +6,7 @@
 
 ```
   git clone https://github.com/ske-13-emotion-classification/emotion-classification.git
+  cd emotion-classification
   export ROOT_DIR=$PWD
 ```
 
