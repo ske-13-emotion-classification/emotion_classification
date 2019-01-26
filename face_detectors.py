@@ -1,8 +1,14 @@
+from abc import ABC, abstractmethod
 from enum import Enum
 from typing import List, Set, Iterable, Callable
 
-import os
 from cv2 import CascadeClassifier
+
+
+class BaseFaceDetector(ABC):
+    @abstractmethod
+    def detect(self, image, then):
+        pass
 
 
 class CascadeXMLEnum(Enum):
@@ -23,19 +29,22 @@ class CascadeXMLEnum(Enum):
     LBPCASCADE_FRONTALFACE_IMPROVED = './data/lbpcascades/lbpcascade_frontalface_improved.xml'
 
 
-class CascadeFaceDetector(object):
+class CascadeFaceDetector(BaseFaceDetector):
     def __init__(self, xml: CascadeXMLEnum = CascadeXMLEnum.HAARCASCADE_FRONTALFACE_DEFAULT.value):
-        self.model = CascadeClassifier(xml)
+        self.__model__ = CascadeClassifier(xml)
 
     def detect(self, image, then: Iterable[Callable] = None) -> List[int]:
-        model = self.model
+        model = self.__model__
+
         faces = model.detectMultiScale(
             image=image,
             scaleFactor=1.1,
             minNeighbors=5,
             minSize=(30, 30)
         )
+
         if then is not None:
             for function in then:
                 function(image, faces)
+
         return faces
