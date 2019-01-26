@@ -17,8 +17,7 @@ def on_failed_to_load_camera():
 
 if __name__ == '__main__':
     face_detector = CascadeFaceDetector(
-        xml=CascadeXMLEnum.LBPCASCADE_FRONTALFACE_IMPROVED.value
-    )
+        xml=CascadeXMLEnum.HAARCASCADE_FRONTALFACE_DEFAULT)
     emotion_classifier = BITBOTSEmotionClassifier()
 
     video_capture = VideoCapture(0)

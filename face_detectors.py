@@ -31,6 +31,8 @@ class CascadeXMLEnum(Enum):
 
 class CascadeFaceDetector(BaseFaceDetector):
     def __init__(self, xml: CascadeXMLEnum = CascadeXMLEnum.HAARCASCADE_FRONTALFACE_DEFAULT.value):
+        if type(xml) == type(CascadeXMLEnum.HAARCASCADE_CUDA_FRONTALFACE_ALT2):
+            xml = xml.value
         self.__model__ = CascadeClassifier(xml)
 
     def detect(self, image, then: Iterable[Callable] = None) -> List[int]:
