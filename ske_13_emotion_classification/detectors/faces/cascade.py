@@ -1,14 +1,9 @@
-from abc import ABC, abstractmethod
 from enum import Enum
 from typing import List, Set, Iterable, Callable
 
 from cv2 import CascadeClassifier
 
-
-class BaseFaceDetector(ABC):
-    @abstractmethod
-    def detect(self, image, then):
-        pass
+from ske_13_emotion_classification.detectors import BaseDetector
 
 
 class CascadeXMLEnum(Enum):
@@ -29,7 +24,7 @@ class CascadeXMLEnum(Enum):
     LBPCASCADE_FRONTALFACE_IMPROVED = './data/lbpcascades/lbpcascade_frontalface_improved.xml'
 
 
-class CascadeFaceDetector(BaseFaceDetector):
+class Cascade(BaseDetector):
     def __init__(self, xml: CascadeXMLEnum = CascadeXMLEnum.HAARCASCADE_FRONTALFACE_DEFAULT.value):
         if type(xml) == type(CascadeXMLEnum.HAARCASCADE_CUDA_FRONTALFACE_ALT2):
             xml = xml.value

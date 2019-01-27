@@ -1,18 +1,13 @@
-from abc import ABC, abstractmethod
 from enum import Enum
 
 import cv2 as cv
-from keras.models import load_model
 import numpy as np
 from numpy import argsort
+from keras.models import load_model
+
+from ske_13_emotion_classification.classifiers.base_classifier import BaseClassifier
 
 emotions = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
-
-
-class BaseEmotionClassifier(ABC):
-    @abstractmethod
-    def predict(self, image, verbose):
-        pass
 
 
 def reshape_image_for_keras_model(image, image_size=None):
@@ -21,7 +16,6 @@ def reshape_image_for_keras_model(image, image_size=None):
 
     image = rescale(image)
     image = image.reshape(*image_size, 1)
-    # image = image.reshape(-1, *image_size, 1)
 
     return image
 
@@ -33,7 +27,7 @@ def rescale(image, scale=1./255):
 # https://github.com/oarriaga/face_classification
 
 
-class BITBOTSEmotionClassifier(BaseEmotionClassifier):
+class BITBOTS(BaseClassifier):
     def __init__(self, model_path='./data/b_it_bots/fer2013_mini_XCEPTION.119-0.65.hdf5'):
         model = load_model(model_path, compile=False)
         image_size = model.input.shape.as_list()[1:-1]
@@ -52,7 +46,7 @@ class BITBOTSEmotionClassifier(BaseEmotionClassifier):
         return image
 
     def __open_image__(self, filename):
-        return imread(filename=filename, flags=0)
+        return cv.imread(filename=filename, flags=0)
 
     def predict(self, images, verbose=0):
         # if type(images[0]) == 'str':

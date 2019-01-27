@@ -3,27 +3,33 @@ from time import sleep
 from cv2 import VideoCapture, imshow, waitKey, destroyAllWindows
 import cv2
 
-from emotion_classifiers import BITBOTSEmotionClassifier
-from face_detectors import CascadeFaceDetector, CascadeXMLEnum
-from utils import draw_bounding_boxes, draw_texts, extract_objects
+from ske_13_emotion_classification.classifiers.emotions import BITBOTS
+from ske_13_emotion_classification.detectors.faces import (
+    Cascade, CascadeXMLEnum
+)
+from ske_13_emotion_classification.utils import (
+    draw_bounding_boxes, draw_texts, extract_objects
+)
+
+default_face_detector = Cascade(
+    xml=CascadeXMLEnum.HAARCASCADE_FRONTALFACE_DEFAULT
+)
+default_emotion_classifier = BITBOTS()
 
 
-def on_failed_to_load_camera():
+def on_failed_to_load_camera(video_capture):
     if not video_capture.isOpened():
         print('Unable to load camera.')
         sleep(5)
         pass
 
 
-if __name__ == '__main__':
-    face_detector = CascadeFaceDetector(
-        xml=CascadeXMLEnum.HAARCASCADE_FRONTALFACE_DEFAULT)
-    emotion_classifier = BITBOTSEmotionClassifier()
+def web_cam(face_detector=default_face_detector, emotion_classifier=default_emotion_classifier):
 
     video_capture = VideoCapture(0)
 
     while True:
-        on_failed_to_load_camera()
+        on_failed_to_load_camera(video_capture)
 
         _, frame = video_capture.read()
 
@@ -55,7 +61,7 @@ if __name__ == '__main__':
         if waitKey(1) & 0xFF == ord('q'):
             break
 
-        imshow('Emotion Classification', frame)
+        imshow('Web Camera Emotion Classification', frame)
 
     video_capture.release()
     destroyAllWindows()
